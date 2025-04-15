@@ -1,0 +1,21 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --Branco_Primario: #ffffff;
+  --Vermelho_Primario: #B71C1C;
+  --Branco_secundario: #F5F5F5;
+  --Vermelho_secundario:#D32F2F;
+  --Cinza:#424242;
+
+}
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}

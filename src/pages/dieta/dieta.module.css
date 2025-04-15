@@ -1,0 +1,86 @@
+.bloco1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    gap: 10px;
+    }
+    
+    .dieta{
+    
+        width: 100%;
+       
+        padding: 10px;
+     
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        
+        justify-items: center;
+        align-items: center;
+    
+    }
+    
+    .row{    
+        border-radius: 15px;   
+        background-color: var(--Branco_Primario);
+        padding: 10px;
+        margin: 10px;
+        width: 85vw;
+        border-style: outset;
+    
+    }
+    span{
+        padding: 1px;
+        margin: 1px;
+        font-size: xx-small;
+        grid-column: 2;
+        grid-row: 2;
+    }
+    
+    button{
+        grid-column: 3;
+        grid-row: 2;
+    }
+    
+    .icones{
+        grid-column: 1;
+        grid-row: 1/4;
+    
+        width: 64px;
+        height: 64px;
+        background-color: var(--Vermelho_secundario);
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        border-radius: 100%;
+    }
+    
+    .icone{
+    
+        font-size:48px;
+    
+        grid-column: 1;
+        grid-row: 1/4;
+    
+    }
+    
+    
+    .barra_de_progresso{
+    
+        margin-bottom: 20px;
+        width: 90vw;
+        height: 20px;
+        background-color: var(--Vermelho_secundario);
+        border-radius: 10px;
+    
+    }
+    
+    .progresso_da_barra{
+    
+        width: 50vw;
+        height: 20px;
+        background-color: green;
+        border-radius: 10px;
+    
+    }

@@ -1,0 +1,86 @@
+  
+  
+  .body{
+    width: 100%;
+    min-height: 100vh;
+  
+    display: flex;
+    flex-direction: column ;
+    align-items: center;
+    justify-content: space-evenly;
+    
+  }
+  
+  .body div{
+    border-radius: 15px;
+  }
+  
+  .body p{
+  
+    font-size: 20px;
+    color: var(--Cinza);
+    font-weight: 600;
+  
+  }
+  
+  .usuario{
+    
+ 
+    height: 100px;
+    width: 90vh;  
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--Branco_Primario) ;
+    margin: 0 auto;
+  }
+
+
+  
+  .usuario img{
+  margin: 1rem;
+    
+    height: 75px;
+    width: auto;
+    border-radius: 100%;
+    border-color: var(--Vermelho_secundario);
+    border-style: groove;
+  
+  }
+  
+  .txt_blc1{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .Nivel{
+    background-color: var(--Vermelho_secundario);
+    padding: 5px;
+    border-radius: 10px;
+    color: var(--Branco_Primario);
+  }
+  
+  .bloco_2{
+    align-items: center;
+  
+  }
+  
+  .bloco_2 img{
+ 
+    margin: 10px;   
+    height: 60px;
+    width: auto;
+    padding-right: 10px;
+  }
+  
+  .bloco_2 div{
+    border-style: ridge;
+    width: 85vw;
+    background-color: var(--Branco_Primario);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+  
+  }
+  
