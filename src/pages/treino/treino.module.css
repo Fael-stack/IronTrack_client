@@ -1,0 +1,148 @@
+.bloco1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-top: 10px;
+}
+
+.row {
+    background-color: var(--Branco_Primario);
+    padding: 16px;
+    margin: 10px;
+    width: 85vw;
+    border-radius: 15px;
+    border-style: outset;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+}
+
+.row:hover {
+    transform: translateY(-2px);
+}
+
+.treino {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.icones {
+    grid-column: 1;
+    grid-row: 1 / 4;
+    width: 64px;
+    height: 64px;
+    background-color: var(--Vermelho_secundario);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+}
+
+.icone {
+    font-size: 48px;
+    grid-column: 1;
+    grid-row: 1 / 4;
+    color: white;
+}
+
+span {
+    padding: 8px;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    grid-column: 2;
+    grid-row: 2;
+    color: var(--Azul_Primario);
+}
+
+button {
+    grid-column: 3;
+    grid-row: 2;
+    background-color: var(--Vermelho_secundario);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: filter 0.2s ease;
+}
+
+button:hover {
+    filter: brightness(0.9);
+}
+
+.barra_de_progresso {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 90vw;
+    height: 20px;
+    background-color: var(--Vermelho_secundario);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progresso_da_barra {
+    width: 50vw;
+    height: 100%;
+    background-color: green;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+
+.infoExpandida {
+    background-color: #f8f8f8;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+    color: #333;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    line-height: 1.5;
+}
+
+.infoExpandida ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.infoExpandida li {
+    margin-bottom: 6px;
+}
+
+.infoExpandida strong {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #222;
+}
+
+.info_base {
+    text-align: center;
+    padding: 20px 10px;
+    background-color: var(--Branco_Primario);
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.info_base h3 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    color: var(--Vermelho_secundario);
+}
+
+.info_base p {
+    font-size: 0.95rem;
+    margin: 4px 0;
+    color: #555;
+}
