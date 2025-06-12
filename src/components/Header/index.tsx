@@ -11,6 +11,16 @@ function Header() {
                 <a href="/">Conta</a>
                 <a href="/dieta">Dieta</a>
                 <a href="/treino">treino</a>
+                <a href="/informacoes_pessoais">info</a>
+                <a href="/criar_conta">criar</a>
+                <a href="/notificacoes">noti</a>
+                <a href="/seguranca">segu</a>
+                <a href="/redefinir_senha_email">senha-email</a>
+                <a href="/redefinir_senha">senha</a>
+                <a href="/account_settings">acc</a>
+                <a href="/dieta_diaria">diar</a>
+
+
             </nav>
         </header>
         

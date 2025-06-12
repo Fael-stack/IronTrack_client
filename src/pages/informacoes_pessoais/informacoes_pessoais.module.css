@@ -1,0 +1,80 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 40px;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .fieldGroup {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .label {
+    font-weight: bold;
+    min-width: 100px;
+  }
+  
+  .input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+  
+  .editButton {
+    background-color: #d92d20;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .editButton:hover {
+    background-color: #b8251b;
+  }
+  
+  .buttonGroup {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .saveButton {
+    background-color: #d92d20;
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .cancelButton {
+    background-color: #c4c4c4;
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
