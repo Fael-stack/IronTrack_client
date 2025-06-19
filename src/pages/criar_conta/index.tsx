@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './criar_conta.module.css';
-const criar_conta: React.FC = () => {
+
+const CriarConta: React.FC = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -10,9 +11,7 @@ const criar_conta: React.FC = () => {
     agree: false,
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -33,15 +32,34 @@ const criar_conta: React.FC = () => {
       return;
     }
 
+    const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
+
+    const emailExists = existingUsers.some(
+      (user: any) => user.email === formData.email
+    );
+
+    if (emailExists) {
+      alert('Este e-mail já está cadastrado!');
+      return;
+    }
+
+    const newUser = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      password: formData.password,
+    };
+
+    localStorage.setItem('users', JSON.stringify([...existingUsers, newUser]));
     alert('Conta criada com sucesso!');
-    // Aqui você pode enviar pra API ou backend
+    // Opcional: redirecionar para login ou limpar o formulário
   };
 
   return (
-    <div className="container">
-      <header className="header">
-        <div className="logo">❤️ Iron track</div>
-        <nav className="nav">
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <div className={styles.logo}>❤️ Iron track</div>
+        <nav className={styles.nav}>
           <a href="#">Home</a>
           <a href="#">Serviços</a>
           <a href="#">Sobre</a>
@@ -49,13 +67,13 @@ const criar_conta: React.FC = () => {
         </nav>
       </header>
 
-      <main className="form-container">
+      <main className={styles.formContainer}>
         <h2>Crie uma conta</h2>
         <p>Join us to track and improve your health journey</p>
 
         <form onSubmit={handleSubmit}>
-          <div className="form-row">
-            <div className="form-group">
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
               <label htmlFor="firstName">Primeiro Nome</label>
               <input
                 type="text"
@@ -68,7 +86,7 @@ const criar_conta: React.FC = () => {
               />
             </div>
 
-            <div className="form-group">
+            <div className={styles.formGroup}>
               <label htmlFor="lastName">Último Nome</label>
               <input
                 type="text"
@@ -82,7 +100,7 @@ const criar_conta: React.FC = () => {
             </div>
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label htmlFor="email">Endereço de email</label>
             <input
               type="email"
@@ -95,7 +113,7 @@ const criar_conta: React.FC = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label htmlFor="password">Senha</label>
             <input
               type="password"
@@ -108,7 +126,7 @@ const criar_conta: React.FC = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label htmlFor="confirmPassword">Confirmação de senha</label>
             <input
               type="password"
@@ -121,7 +139,7 @@ const criar_conta: React.FC = () => {
             />
           </div>
 
-          <label className="checkbox">
+          <label className={styles.checkbox}>
             <input
               type="checkbox"
               name="agree"
@@ -131,25 +149,25 @@ const criar_conta: React.FC = () => {
             Eu concordo com os <a href="#">Termos de serviço</a> e <a href="#">Política de privacidade</a>
           </label>
 
-          <button type="submit" className="btn-primary">Criar conta</button>
+          <button type="submit" className={styles.btnPrimary}>Criar conta</button>
 
-          <p className="login-link">
-            Já possui uma conta? <a href="#" className="red-link">Faça login</a>
+          <p className={styles.loginLink}>
+            Já possui uma conta? <a href="#" className={styles.redLink}>Faça login</a>
           </p>
 
-          <div className="social-buttons">
-            <button type="button" className="btn-social google">G Entrar com Google</button>
-            <button type="button" className="btn-social apple"> Entrar com Apple</button>
+          <div className={styles.socialButtons}>
+            <button type="button" className={styles.btnSocial}>G Entrar com Google</button>
+            <button type="button" className={styles.btnSocial}> Entrar com Apple</button>
           </div>
         </form>
       </main>
 
-      <footer className="footer">
+      <footer className={styles.footer}>
         <p>© 2025 Fit track. Todos os direitos reservados.</p>
-        <div className="social-icons">⚫ ⚫ ⚫</div>
+        <div className={styles.socialIcons}>⚫ ⚫ ⚫</div>
       </footer>
     </div>
   );
 };
 
-export default criar_conta;
+export default CriarConta;

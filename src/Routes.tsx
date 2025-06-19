@@ -12,6 +12,9 @@ import Redefinir_Senha_email from "./pages/redefinir_senha_email";
 import Redefinir_Senha from "./pages/redefinir_senha";
 import Account_Settings from "./pages/account_settings";
 import Dieta_Diaria from "./pages/dieta_diaria";
+
+import Login from './pages/login/login.tsx';
+
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -29,6 +32,8 @@ function AppRoutes() {
         <Route path="/redefinir_senha" element={<Redefinir_Senha/>} />
         <Route path="/account_settings" element={<Account_Settings/>}/>
         <Route path="/dieta_diaria" element={<Dieta_Diaria/>}/>
+        <Route path="/login" element={<Login/>}/>
+        
 
 
       </Routes>

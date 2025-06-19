@@ -19,6 +19,7 @@ function Header() {
                 <a href="/redefinir_senha">senha</a>
                 <a href="/account_settings">acc</a>
                 <a href="/dieta_diaria">diar</a>
+                <a href="/login">login</a>
 
 
             </nav>
