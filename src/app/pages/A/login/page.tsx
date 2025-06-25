@@ -1,10 +1,12 @@
 "use client";
 import React, { useState } from 'react';
-import './page.css'; 
+import { useRouter } from 'next/navigation';
+import './page.css';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,7 +20,9 @@ const Login: React.FC = () => {
     if (userFound) {
       localStorage.setItem('currentUser', JSON.stringify(userFound));
       alert(`Bem-vindo(a), ${userFound.firstName}!`);
-      // Aqui você pode redirecionar para o dashboard
+
+      // Redireciona para a atual página inicial
+      router.push('/');
     } else {
       alert('Email ou senha incorretos.');
     }
@@ -67,9 +71,10 @@ const Login: React.FC = () => {
 
           <button type="submit" className="btnPrimary">Entrar</button>
 
-          <p className="loginLink">
-            Não tem uma conta? <a href="#" className="redLink">Criar conta</a>
-          </p>
+          <p className="loginLink"> Não tem uma conta?{' '}
+            <button type="button" className="redLink" onClick={() =>
+             router.push('/pages/A/criar_conta')}> Criar conta </button> </p>
+
         </form>
       </main>
 

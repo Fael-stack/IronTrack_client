@@ -90,8 +90,17 @@
   }
   
   .redLink {
-    color: red;
-    font-weight: 500;
+  background: none;
+  border: none;
+  color: #e01010;       
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;        
+}
+
+.redLink:hover {
+  color: #0051a2;       
   }
   
   .socialButtons {

@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import './page.css'; // Changed to import a global CSS file
+import { useRouter } from 'next/navigation'; 
+import './page.css';
 
 const CriarConta: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ const CriarConta: React.FC = () => {
     confirmPassword: '',
     agree: false,
   });
+
+  const router = useRouter(); 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value, type, checked } = e.target;
@@ -53,7 +56,10 @@ const CriarConta: React.FC = () => {
 
     localStorage.setItem('users', JSON.stringify([...existingUsers, newUser]));
     alert('Conta criada com sucesso!');
-    // Opcional: redirecionar para login ou limpar o formulário
+
+    // ✅ redireciona para a página de login
+    router.push('/pages/A/login');
+
   };
 
   return (
@@ -151,10 +157,13 @@ const CriarConta: React.FC = () => {
           </label>
 
           <button type="submit" className="btnPrimary">Criar conta</button>
-
           <p className="loginLink">
-            Já possui uma conta? <a href="#" className="redLink">Faça login</a>
-          </p>
+              Já possui uma conta?{' '}
+               <button type="button" className="redLink" onClick={() => 
+               router.push('/pages/A/login')}>Faça Login</button> </p>
+          
+
+          
 
           <div className="socialButtons">
             <button type="button" className="btnSocial">G Entrar com Google</button>
