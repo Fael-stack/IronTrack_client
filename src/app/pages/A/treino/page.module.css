@@ -227,7 +227,7 @@ a.secondary {
   background-color: var(--button-primary-hover);
 }
 
-/* Progresso circular (simples para texto) */
+
 .progressCircle {
   width: 80px;
   height: 80px;

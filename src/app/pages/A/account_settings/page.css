@@ -275,7 +275,6 @@
     }
   }
 
-  /* Estilo para o conteúdo do submenu */
 .submenuContent {
   background-color: #fafafa;
   padding: 15px 40px 15px 70px;
@@ -301,18 +300,18 @@
   margin-bottom: 6px;
 }
 
-/* Ajuste para botões para parecerem links e ter cursor pointer */
+
 .settingsLink button {
   cursor: pointer;
 }
 
-/* Deixar o botão settingsLink sem contorno ao focar para evitar brilho padrão, mas mantendo acessibilidade */
+
 .settingsLink button:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.5);
 }
 
-/* Pequeno ajuste para o ícone do submenu aberto */
+
 .settingsArrow {
   transition: transform 0.3s ease;
 }

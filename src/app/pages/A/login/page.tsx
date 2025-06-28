@@ -7,7 +7,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginFailed, setLoginFailed] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(''); // Novo estado para mensagens
+  const [errorMessage, setErrorMessage] = useState(''); 
   const router = useRouter();
 
   const handleLogin = (e: React.FormEvent) => {
@@ -29,7 +29,7 @@ const Login: React.FC = () => {
       return;
     }
 
-    // Login bem-sucedido
+    
     localStorage.setItem('currentUser', JSON.stringify(userByEmail));
     alert(`Bem-vindo(a), ${userByEmail.firstName}!`);
     setErrorMessage('');
@@ -84,7 +84,7 @@ const Login: React.FC = () => {
 
           <button type="submit" className="btnPrimary">Entrar</button>
 
-          {/* Mostra a mensagem de erro se login falhar */}
+          {/* Mostra a mensagem de erro se login der ruim */}
           {loginFailed && <p className="errorMessage">{errorMessage}</p>}
 
           {loginFailed && (

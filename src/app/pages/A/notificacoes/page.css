@@ -2,10 +2,10 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #f0f0f0; /* Um cinza claro para o fundo */
+    background-color: #f0f0f0;
   }
   
-  /* Estilos do cabeçalho (adaptados da imagem) */
+
   .header {
     display: flex;
     justify-content: space-between;
@@ -13,13 +13,13 @@
     padding: 15px 30px;
     background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color: #333; /* Cor do texto padrão */
+    color: #333; 
   }
   
   .logo {
     font-weight: bold;
     font-size: 1.2em;
-    color: #333; /* Cor do "Iron track" */
+    color: #333; 
   }
   
   .nav ul {
@@ -37,7 +37,7 @@
   }
   
   .nav li:hover {
-    color: #007bff; /* Exemplo de hover, pode ser ajustado */
+    color: #007bff; 
   }
   
   .profileSection {
@@ -54,15 +54,15 @@
   .avatar {
     width: 30px;
     height: 30px;
-    background-color: #ccc; /* Cor de placeholder para o avatar */
+    background-color: #ccc; 
     border-radius: 50%;
     border: 1px solid #eee;
   }
   
-  /* Estilos do conteúdo principal */
+
   .mainContent {
     padding: 40px;
-    flex-grow: 1; /* Para que o conteúdo principal ocupe o espaço restante */
+    flex-grow: 1;
   }
   
   .title {
@@ -75,7 +75,7 @@
   .notificationsList {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Espaço entre os itens de notificação */
+    gap: 15px; 
   }
   
   .notificationItem {
@@ -91,23 +91,23 @@
   .notificationLeft {
     display: flex;
     align-items: center;
-    gap: 15px; /* Espaço entre o sino e o texto */
+    gap: 15px; 
     font-size: 1.1em;
     color: #555;
   }
   
   .iconBell {
-    color: #888; /* Cor do ícone de sino */
+    color: #888; 
   }
   
   .notificationRight {
     display: flex;
     align-items: center;
-    gap: 10px; /* Espaço entre o relógio, tempo e lixeira */
+    gap: 10px; 
   }
   
   .iconClock {
-    color: #888; /* Cor do ícone de relógio */
+    color: #888; 
   }
   
   .time {
@@ -119,21 +119,21 @@
   .deleteButton {
     background: none;
     border: none;
-    color: #ff6347; /* Cor do ícone de lixeira */
+    color: #ff6347;
     cursor: pointer;
     font-size: 1.1em;
     padding: 5px;
-    display: flex; /* Para centralizar o ícone se necessário */
+    display: flex; 
     align-items: center;
     justify-content: center;
     transition: color 0.2s ease-in-out;
   }
   
   .deleteButton:hover {
-    color: #e53935; /* Cor mais escura no hover */
+    color: #e53935; 
   }
   
-  /* Para dispositivos menores (opcional, adicione mais media queries conforme necessário) */
+  
   @media (max-width: 768px) {
     .header {
       flex-direction: column;

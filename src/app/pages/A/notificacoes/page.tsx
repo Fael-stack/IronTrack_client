@@ -12,7 +12,7 @@ interface Notification {
 const Notificacoes: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  
+  // criar notificacao e mandar pro localstorage pra salvar
   useEffect(() => {
     const stored = localStorage.getItem('notifications');
     if (stored) {
@@ -28,12 +28,12 @@ const Notificacoes: React.FC = () => {
     }
   }, []);
 
-  // Salvar notificações sempre que forem alteradas
+  // Salvar notificacao sempre q tiver uma nova ou ela mudar
   useEffect(() => {
     localStorage.setItem('notifications', JSON.stringify(notifications));
   }, [notifications]);
 
-  // Remover uma notificação por ID
+  // Remover notificacao por id
   const handleDelete = (id: string) => {
     const updated = notifications.filter((n) => n.id !== id);
     setNotifications(updated);

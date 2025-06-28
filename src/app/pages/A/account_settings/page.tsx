@@ -96,7 +96,7 @@ const AccountSettings: React.FC = () => {
                 <div className="submenuContent">
                   <p><strong>Nome completo:</strong> {user?.firstName} {user?.lastName}</p>
                   <p><strong>Email:</strong> {user?.email}</p>
-                  {/* Você pode colocar campos para editar essas informações */}
+                  {/* da pra add mais campos aq depoise */}
                 </div>
               )}
             </li>
@@ -174,7 +174,7 @@ const AccountSettings: React.FC = () => {
               )}
             </li>
 
-            {/* Sair */}
+            {/* bgl de sair */}
             <li className="settingsItem">
               <button
                 onClick={handleLogout}
