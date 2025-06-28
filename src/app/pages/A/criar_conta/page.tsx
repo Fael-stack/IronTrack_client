@@ -57,7 +57,7 @@ const CriarConta: React.FC = () => {
     localStorage.setItem('users', JSON.stringify([...existingUsers, newUser]));
     alert('Conta criada com sucesso!');
 
-    // ✅ redireciona para a página de login
+    // redireciona para a página de login
     router.push('/pages/A/login');
 
   };

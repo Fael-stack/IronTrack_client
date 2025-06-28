@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import {
   FaHeartbeat,
   FaUser,
@@ -6,14 +7,41 @@ import {
   FaBell,
   FaQuestionCircle,
   FaSignOutAlt,
-  FaChevronRight
+  FaChevronRight,
+  FaChevronDown
 } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
 import './page.css';
 
 const AccountSettings: React.FC = () => {
+  const [user, setUser] = useState<{ firstName: string; lastName: string; email: string } | null>(null);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    } else {
+      router.push('/pages/A/login');
+    }
+  }, [router]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('currentUser');
+    router.push('/pages/A/login');
+  };
+
+  const toggleMenu = (menuName: string) => {
+    if (openMenu === menuName) {
+      setOpenMenu(null); // fecha o menu se clicar de novo
+    } else {
+      setOpenMenu(menuName);
+    }
+  };
+
   return (
     <div className="pageContainer">
-
       <header className="header">
         <div className="headerLeft">
           <FaHeartbeat className="headerLogoIcon" />
@@ -24,73 +52,143 @@ const AccountSettings: React.FC = () => {
           <div className="headerAvatarPlaceholder">
             <img src="/path/to/your/avatar.jpg" alt="User Avatar" className="headerAvatar" />
           </div>
-          <div className="headerOtherAvatar"></div>
         </div>
       </header>
 
       <main className="mainContent">
-
         <div className="profileCard">
           <div className="profileInfo">
             <div className="profileAvatar">
               <img src="/path/to/your/profile-avatar.jpg" alt="Profile Avatar" className="profileAvatarImg" />
             </div>
             <div className="profileDetails">
-              <h2 className="profileName">Sarah Johnson</h2>
-              <p className="profileEmail">sarah.johnson@email.com</p>
+              <h2 className="profileName">
+                {user ? `${user.firstName} ${user.lastName}` : 'Carregando...'}
+              </h2>
+              <p className="profileEmail">{user ? user.email : '---'}</p>
               <span className="premiumBadge">Premium Member</span>
             </div>
           </div>
         </div>
 
         <div className="settingsCard">
-          <h3 className="settingsTitle">Account Settings</h3>
+          <h3 className="settingsTitle">Configurações da Conta</h3>
           <ul className="settingsList">
+
+            {/* Informações pessoais */}
             <li className="settingsItem">
-              <a href="#" className="settingsLink">
+              <button
+                className="settingsLink"
+                onClick={() => toggleMenu('personalInfo')}
+                style={{ background: 'none', border: 'none' }}
+              >
                 <div className="settingsLeft">
                   <FaUser className="settingsIcon" />
                   <span>Informações pessoais</span>
                 </div>
-                <FaChevronRight className="settingsArrow" />
-              </a>
+                {openMenu === 'personalInfo' ? (
+                  <FaChevronDown className="settingsArrow" />
+                ) : (
+                  <FaChevronRight className="settingsArrow" />
+                )}
+              </button>
+              {openMenu === 'personalInfo' && (
+                <div className="submenuContent">
+                  <p><strong>Nome completo:</strong> {user?.firstName} {user?.lastName}</p>
+                  <p><strong>Email:</strong> {user?.email}</p>
+                  {/* Você pode colocar campos para editar essas informações */}
+                </div>
+              )}
             </li>
+
+            {/* Privacidade e segurança */}
             <li className="settingsItem">
-              <a href="#" className="settingsLink">
+              <button
+                className="settingsLink"
+                onClick={() => toggleMenu('privacy')}
+                style={{ background: 'none', border: 'none' }}
+              >
                 <div className="settingsLeft">
                   <FaShieldAlt className="settingsIcon" />
                   <span>Privacidade e segurança</span>
                 </div>
-                <FaChevronRight className="settingsArrow" />
-              </a>
+                {openMenu === 'privacy' ? (
+                  <FaChevronDown className="settingsArrow" />
+                ) : (
+                  <FaChevronRight className="settingsArrow" />
+                )}
+              </button>
+              {openMenu === 'privacy' && (
+                <div className="submenuContent">
+                  <p>Configurações de privacidade e segurança podem ser gerenciadas aqui.</p>
+                  <ul>
+                    <li>Alterar senha</li>
+                    <li>Autenticação em dois fatores</li>
+                    <li>Gerenciar dispositivos conectados</li>
+                  </ul>
+                </div>
+              )}
             </li>
+
+            {/* Notificações - redireciona */}
             <li className="settingsItem">
-              <a href="#" className="settingsLink">
+              <button
+                className="settingsLink"
+                onClick={() => router.push('/pages/A/notificacoes')}
+                style={{ background: 'none', border: 'none' }}
+              >
                 <div className="settingsLeft">
                   <FaBell className="settingsIcon" />
                   <span>Notificações</span>
                 </div>
                 <FaChevronRight className="settingsArrow" />
-              </a>
+              </button>
             </li>
+
+            {/* Ajuda */}
             <li className="settingsItem">
-              <a href="#" className="settingsLink">
+              <button
+                className="settingsLink"
+                onClick={() => toggleMenu('help')}
+                style={{ background: 'none', border: 'none' }}
+              >
                 <div className="settingsLeft">
                   <FaQuestionCircle className="settingsIcon" />
                   <span>Ajuda</span>
                 </div>
-                <FaChevronRight className="settingsArrow" />
-              </a>
+                {openMenu === 'help' ? (
+                  <FaChevronDown className="settingsArrow" />
+                ) : (
+                  <FaChevronRight className="settingsArrow" />
+                )}
+              </button>
+              {openMenu === 'help' && (
+                <div className="submenuContent">
+                  <p>Precisa de ajuda? Aqui estão algumas perguntas frequentes e contato.</p>
+                  <ul>
+                    <li>Como redefinir minha senha?</li>
+                    <li>Como atualizar meu perfil?</li>
+                    <li><a href="mailto:support@irontrack.com">Contato do suporte</a></li>
+                  </ul>
+                </div>
+              )}
             </li>
+
+            {/* Sair */}
             <li className="settingsItem">
-              <a href="#" className="settingsLink">
+              <button
+                onClick={handleLogout}
+                className="settingsLink"
+                style={{ background: 'none', border: 'none' }}
+              >
                 <div className="settingsLeft">
                   <FaSignOutAlt className="settingsIcon" />
                   <span>Sair</span>
                 </div>
                 <FaChevronRight className="settingsArrow" />
-              </a>
+              </button>
             </li>
+
           </ul>
         </div>
       </main>

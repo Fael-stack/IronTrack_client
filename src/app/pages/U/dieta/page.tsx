@@ -53,10 +53,10 @@ const DietaDiaria: React.FC = () => { // Renamed component to PascalCase
     },
   ];
 
-  // Função mock para marcar como completo (seria um setState em uma aplicação real)
+ 
   const handleMarkAsComplete = (id: string) => {
     console.log(`Refeição ${id} marcada como completa!`);
-    // Em um app real: setDietPlan para atualizar o estado
+    
   };
 
   return (

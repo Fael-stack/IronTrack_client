@@ -274,3 +274,49 @@
       font-size: 0.95em;
     }
   }
+
+  /* Estilo para o conteúdo do submenu */
+.submenuContent {
+  background-color: #fafafa;
+  padding: 15px 40px 15px 70px;
+  border-left: 3px solid #e53935;
+  color: #555;
+  font-size: 0.95em;
+  line-height: 1.4em;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.submenuContent p {
+  margin: 8px 0;
+}
+
+.submenuContent ul {
+  padding-left: 20px;
+  margin: 8px 0;
+  list-style-type: disc;
+}
+
+.submenuContent ul li {
+  margin-bottom: 6px;
+}
+
+/* Ajuste para botões para parecerem links e ter cursor pointer */
+.settingsLink button {
+  cursor: pointer;
+}
+
+/* Deixar o botão settingsLink sem contorno ao focar para evitar brilho padrão, mas mantendo acessibilidade */
+.settingsLink button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.5);
+}
+
+/* Pequeno ajuste para o ícone do submenu aberto */
+.settingsArrow {
+  transition: transform 0.3s ease;
+}
+
+.settingsArrow[data-open='true'] {
+  transform: rotate(90deg);
+}

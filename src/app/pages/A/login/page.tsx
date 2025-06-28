@@ -6,6 +6,8 @@ import './page.css';
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loginFailed, setLoginFailed] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(''); // Novo estado para mensagens
   const router = useRouter();
 
   const handleLogin = (e: React.FormEvent) => {
@@ -13,19 +15,30 @@ const Login: React.FC = () => {
 
     const users = JSON.parse(localStorage.getItem('users') || '[]');
 
-    const userFound = users.find(
-      (user: any) => user.email === email && user.password === password
-    );
+    const userByEmail = users.find((user: any) => user.email === email);
 
-    if (userFound) {
-      localStorage.setItem('currentUser', JSON.stringify(userFound));
-      alert(`Bem-vindo(a), ${userFound.firstName}!`);
-
-      // Redireciona para a atual página inicial
-      router.push('/');
-    } else {
-      alert('Email ou senha incorretos.');
+    if (!userByEmail) {
+      setErrorMessage('Email não cadastrado.');
+      setLoginFailed(true);
+      return;
     }
+
+    if (userByEmail.password !== password) {
+      setErrorMessage('Senha incorreta.');
+      setLoginFailed(true);
+      return;
+    }
+
+    // Login bem-sucedido
+    localStorage.setItem('currentUser', JSON.stringify(userByEmail));
+    alert(`Bem-vindo(a), ${userByEmail.firstName}!`);
+    setErrorMessage('');
+    setLoginFailed(false);
+    router.push('/');
+  };
+
+  const handleResetPassword = () => {
+    router.push('/pages/A/redefinir_senha');
   };
 
   return (
@@ -71,10 +84,21 @@ const Login: React.FC = () => {
 
           <button type="submit" className="btnPrimary">Entrar</button>
 
-          <p className="loginLink"> Não tem uma conta?{' '}
-            <button type="button" className="redLink" onClick={() =>
-             router.push('/pages/A/criar_conta')}> Criar conta </button> </p>
+          {/* Mostra a mensagem de erro se login falhar */}
+          {loginFailed && <p className="errorMessage">{errorMessage}</p>}
 
+          {loginFailed && (
+            <button type="button" className="btnSecondary" onClick={handleResetPassword}>
+              Esqueci minha senha
+            </button>
+          )}
+
+          <p className="loginLink">
+            Não tem uma conta?{' '}
+            <button type="button" className="redLink" onClick={() => router.push('/pages/A/criar_conta')}>
+              Criar conta
+            </button>
+          </p>
         </form>
       </main>
 
