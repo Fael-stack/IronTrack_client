@@ -1,0 +1,34 @@
+.container {
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+    min-height: 100vh;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .logo {
+    font-weight: bold;
+    font-size: 1.25rem;
+  }
+  
+  .nav a {
+    margin-left: 1.5rem;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+  }
+  
+  
+  .footer {
+    text-align: center;
+    padding: 2rem;
+    background: #f1f1f1;
+    font-size: 0.9rem;
+  }
+  
