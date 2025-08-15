@@ -5,6 +5,7 @@ import {
   Dumbbell, UserCircle, ChevronDown, Trash2, Weight, Activity, CheckCircle
 } from 'lucide-react';
 
+import Header from '@/components/Header/Header';
 // COMPONENTE HEADER
 
 // COMPONENTE CARD DO EXERCÍCIO
