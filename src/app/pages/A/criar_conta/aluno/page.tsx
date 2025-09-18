@@ -1,10 +1,9 @@
 "use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import './page.professor.css';
+import './page.aluno.css';
 
-const CriarContaProfessor: React.FC = () => {
-  const [codigo, setCodigo] = useState('');
+const CriarContaAluno: React.FC = () => {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -15,7 +14,7 @@ const CriarContaProfessor: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!codigo || !nome || !email || !senha) {
+    if (!nome || !email || !senha) {
       setErrorMessage('Todos os campos são obrigatórios.');
       return;
     }
@@ -25,7 +24,6 @@ const CriarContaProfessor: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          codigo,
           nome,
           email,
           senha
@@ -34,15 +32,15 @@ const CriarContaProfessor: React.FC = () => {
 
       if (!response.ok) {
         const data = await response.json();
-        setErrorMessage(data.message || 'Erro ao cadastrar professor.');
+        setErrorMessage(data.message || 'Erro ao cadastrar.');
         return;
       }
 
-      setSuccessMessage('Professor cadastrado com sucesso!');
+      setSuccessMessage('cadastro bem sucedido!');
       setErrorMessage('');
 
-      // Redireciona para a página de login do professor
-      setTimeout(() => router.push('/pages/A/login/professor'), 1500);
+      // Redireciona para a página de login do aluno
+      setTimeout(() => router.push('/pages/A/login/aluno'), 1500);
 
     } catch (error) {
       console.error(error);
@@ -53,22 +51,10 @@ const CriarContaProfessor: React.FC = () => {
   return (
     <div className="container">
       <main className="formContainer">
-        <h2>Cadastro do Professor</h2>
+        <h2>Cadastro do Aluno</h2>
         <p>Preencha os dados abaixo para criar sua conta</p>
 
         <form onSubmit={handleSubmit}>
-          <div className="formGroup">
-            <label htmlFor="codigo">Código</label>
-            <input
-              type="text"
-              id="codigo"
-              placeholder="Insira seu código"
-              value={codigo}
-              onChange={e => setCodigo(e.target.value)}
-              required
-            />
-          </div>
-
           <div className="formGroup">
             <label htmlFor="nome">Nome completo</label>
             <input
@@ -115,7 +101,7 @@ const CriarContaProfessor: React.FC = () => {
             <button
               type="button"
               className="redLink"
-              onClick={() => router.push('/pages/A/login/professor')}
+              onClick={() => router.push('/pages/A/login/aluno')}
             >
               Faça login
             </button>
@@ -131,4 +117,4 @@ const CriarContaProfessor: React.FC = () => {
   );
 };
 
-export default CriarContaProfessor;
+export default CriarContaAluno;

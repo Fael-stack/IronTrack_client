@@ -57,14 +57,14 @@
 }
 
 .formGroup input:focus {
-  border-color: #007bff;
+  border-color: #b9030c;
 }
 
 /* Botões */
 .btnPrimary {
   width: 100%;
   padding: 12px 0;
-  background-color: #007bff;
+  background-color: #b9030c;
   color: #fff;
   font-size: 1em;
   font-weight: 500;
@@ -76,7 +76,7 @@
 }
 
 .btnPrimary:hover {
-  background-color: #0056b3;
+  background-color: #d3020c;
 }
 
 /* Link de cadastro */
@@ -89,7 +89,7 @@
 .redLink {
   background: none;
   border: none;
-  color: #007bff;
+  color: #b9030c;
   cursor: pointer;
   font-weight: 500;
   padding: 0;

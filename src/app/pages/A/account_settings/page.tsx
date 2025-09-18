@@ -23,13 +23,13 @@ const AccountSettings: React.FC = () => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     } else {
-      router.push('/pages/A/login');
+      router.push('/pages/A/criar_conta/professor'); 
     }
   }, [router]);
 
   const handleLogout = () => {
     localStorage.removeItem('currentUser');
-    router.push('/pages/A/login');
+    router.push('/pages/A/login/professor');
   };
 
   const toggleMenu = (menuName: string) => {

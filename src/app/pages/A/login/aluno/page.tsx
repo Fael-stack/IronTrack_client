@@ -1,12 +1,11 @@
 "use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import './page.professor.css'; // Seu CSS separado
+import './page.aluno.css'; 
 
-const LoginProfessor: React.FC = () => {
+const LoginAluno: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [codigo, setCodigo ] = useState('')
   const [loginFailed, setLoginFailed] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
@@ -18,7 +17,7 @@ const LoginProfessor: React.FC = () => {
       const response = await fetch('http://localhost:4000/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ codigo, email, senha: password }),
+        body: JSON.stringify({email, senha: password }),
       });
 
       const data = await response.json();
@@ -34,7 +33,7 @@ const LoginProfessor: React.FC = () => {
 
       setLoginFailed(false);
       setErrorMessage('');
-      router.push('/pages/A/treino'); // Redireciona para o dashboard do professor
+      router.push('/pages/A/treino'); // Redireciona para o dashboard padrão por enquanto
     } catch (error) {
       console.error(error);
       setErrorMessage('Erro de conexão com o servidor');
@@ -72,17 +71,6 @@ const LoginProfessor: React.FC = () => {
             />
           </div>
 
-          <div className="formGroup">
-            <label htmlFor="codigo">Codigo</label>
-            <input
-              type="codigo"
-              id="codigo"
-              placeholder="Digite seu codigo"
-              value={codigo}
-              onChange={e => setCodigo(e.target.value)}
-              required
-            />
-          </div>
 
           <button type="submit" className="btnPrimary">Entrar</button>
 
@@ -93,7 +81,7 @@ const LoginProfessor: React.FC = () => {
             <button
               type="button"
               className="redLink"
-              onClick={() => router.push('/pages/A/criar_conta/professor')}
+              onClick={() => router.push('/pages/A/criar_conta/aluno')}
             >
               Cadastre-se
             </button>
@@ -109,4 +97,4 @@ const LoginProfessor: React.FC = () => {
   );
 };
 
-export default LoginProfessor;
+export default LoginAluno;
