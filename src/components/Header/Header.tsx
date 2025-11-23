@@ -69,7 +69,9 @@ export default function Header() {
     router.push('/')
   }
 
-  const avatarUrl = user?.avatarUrl || '/default-avatar.png'
+  const storedAvatar = typeof window !== 'undefined' ? localStorage.getItem('avatarUrl') : null
+  const avatarUrl = storedAvatar || user?.avatarUrl || '/default-avatar.png'
+
 
   // Links dinâmicos de contratos
   const contratosLink =
@@ -115,7 +117,7 @@ export default function Header() {
         ) : (
           <Link href="/pages/login/aluno" className="navLink">Entrar</Link>
         )}
-      </div>
+      </div>  
 
       <style jsx>{`
         .header {

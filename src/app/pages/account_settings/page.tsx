@@ -24,6 +24,8 @@ const AccountSettings: React.FC = () => {
   const [userType, setUserType] = useState<'aluno' | 'treinador' | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [avatarUrl, setAvatarUrl] = useState('/default-avatar.png');
+
   const router = useRouter();
 
   useEffect(() => {
@@ -84,6 +86,13 @@ const AccountSettings: React.FC = () => {
     fetchUser();
   }, [router]);
 
+    useEffect(() => {
+    const storedAvatar = localStorage.getItem('avatarUrl');
+    if (storedAvatar) {
+      setAvatarUrl(storedAvatar);
+    }
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
@@ -106,9 +115,10 @@ const AccountSettings: React.FC = () => {
           <div className="profileInfo">
             <div className="profileAvatar">
               <img
-                src="/default-avatar.png"
+                src={avatarUrl}
                 alt="Profile Avatar"
                 className="profileAvatarImg"
+                onError={(e) => (e.currentTarget.src = '/default-avatar.png')}
               />
             </div>
             <div className="profileDetails">

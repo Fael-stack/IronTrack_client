@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import io from "socket.io-client";
 import axios from "axios";
 
-// 🔹 Interface do remetente pode ser string (ID) ou objeto completo
+// Interface do remetente pode ser string(ID) ou objeto completo
 interface Remetente {
   _id: string;
   nome?: string;
@@ -12,7 +12,7 @@ interface Remetente {
 }
 
 interface Mensagem {
-  remetente: Remetente | string; // Backend envia objeto
+  remetente: Remetente | string; 
   remetenteModel: "Aluno" | "Treinador";
   conteudo: string;
   data?: string;
@@ -34,20 +34,20 @@ interface Contrato {
 const socket = io("http://localhost:4000");
 
 export default function ChatPage() {
-  const { id } = useParams(); // id do contrato
+  const { id } = useParams(); 
   const [mensagens, setMensagens] = useState<Mensagem[]>([]);
   const [novaMensagem, setNovaMensagem] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
   const [nomeOutroUsuario, setNomeOutroUsuario] = useState("");
 
-  // 🔹 Pegar userId e role do localStorage
+  // Pega  userId e role do localStorage
   useEffect(() => {
     setUserId(localStorage.getItem("userId"));
-    setRole(localStorage.getItem("userType")); // "aluno" ou "treinador"
+    setRole(localStorage.getItem("userType")); // aluno ou treinador
   }, []);
 
-  // 🔹 Carrega mensagens e entra na sala
+  //  Carrega mensagens e entra na sala
   useEffect(() => {
     if (!id) return;
 
@@ -77,14 +77,14 @@ export default function ChatPage() {
     };
   }, [id]);
 
-  // 🔹 Carrega nome do outro usuário (aluno ou treinador)
+  //  Carrega nome do outro usuário (aluno ou treinador)
   useEffect(() => {
     if (!id || !userId || !role) return;
 
     const carregarContrato = async () => {
       try {
         const res = await axios.get(`http://localhost:4000/contracts/${id}`);
-        const contrato: Contrato = res.data; // tipo do JSON que você forneceu
+        const contrato: Contrato = res.data; 
 
         if (userId === contrato.aluno._id) {
           setNomeOutroUsuario(contrato.treinador.nome || contrato.treinador.name || "Treinador");
@@ -99,7 +99,7 @@ export default function ChatPage() {
     carregarContrato();
   }, [id, userId, role]);
 
-  // 🔹 Enviar mensagem
+
   const enviarMensagem = () => {
     if (!novaMensagem.trim() || !userId || !role) return;
 
@@ -127,7 +127,7 @@ export default function ChatPage() {
         {mensagens.length === 0 && <p style={{ textAlign: "center", color: "#888" }}>Nenhuma mensagem ainda.</p>}
 
         {mensagens.map((msg) => {
-          // 🔹 Comparar IDs sempre como string
+          
           const remetenteId = typeof msg.remetente === "object" ? msg.remetente._id : msg.remetente;
           const isMeu = String(remetenteId) === String(userId);
 
