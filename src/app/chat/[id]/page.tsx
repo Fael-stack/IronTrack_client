@@ -1,24 +1,10 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import io from "socket.io-client";
+import { useRouter, useParams } from "next/navigation";
 import axios from "axios";
-
-// Interface do remetente pode ser string(ID) ou objeto completo
-interface Remetente {
-  _id: string;
-  nome?: string;
-  name?: string;
-}
-
-interface Mensagem {
-  remetente: Remetente | string; 
-  remetenteModel: "Aluno" | "Treinador";
-  conteudo: string;
-  data?: string;
-  horario?: string;
-  _id?: string;
-}
+import io from "socket.io-client";
+import styles from "./page.module.css";
 
 interface Usuario {
   _id: string;
@@ -26,138 +12,224 @@ interface Usuario {
   name?: string;
 }
 
+interface Remetente {
+  _id: string;
+  nome?: string;
+  name?: string;
+}
+
+interface Mensagem {
+  _id?: string;
+  conteudo: string;
+  remetente: Remetente | string;
+  remetenteModel: "Aluno" | "Treinador";
+  horario?: string;
+  data?: string;
+}
+
 interface Contrato {
+  _id: string;
   aluno: Usuario;
   treinador: Usuario;
+  status: string;
 }
 
 const socket = io("http://localhost:4000");
 
-export default function ChatPage() {
-  const { id } = useParams(); 
-  const [mensagens, setMensagens] = useState<Mensagem[]>([]);
-  const [novaMensagem, setNovaMensagem] = useState("");
+export default function ChatWhatsApp() {
+  const router = useRouter();
+  const { id } = useParams();
+
   const [userId, setUserId] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
+
+  const [contratos, setContratos] = useState<Contrato[]>([]);
+  const [mensagens, setMensagens] = useState<Mensagem[]>([]);
+  const [novaMensagem, setNovaMensagem] = useState("");
   const [nomeOutroUsuario, setNomeOutroUsuario] = useState("");
 
-  // Pega  userId e role do localStorage
+  // Carregar user
   useEffect(() => {
     setUserId(localStorage.getItem("userId"));
-    setRole(localStorage.getItem("userType")); // aluno ou treinador
+    setRole(localStorage.getItem("role") || localStorage.getItem("userType"));
   }, []);
 
-  //  Carrega mensagens e entra na sala
+  // Carregar contratos
+  useEffect(() => {
+    if (!userId || !role) return;
+
+    const buscar = async () => {
+      const res = await axios.get<Contrato[]>("http://localhost:4000/contracts");
+
+      let filtrados =
+        role === "Aluno"
+          ? res.data.filter(c => c.aluno?._id === userId)
+          : res.data.filter(c => c.treinador?._id === userId);
+
+      setContratos(filtrados);
+    };
+
+    buscar();
+  }, [userId, role]);
+
+  // Carregar mensagens quando um contrato é selecionado
   useEffect(() => {
     if (!id) return;
 
-    const salaId = Array.isArray(id) ? id[0] : id;
-
-    const carregarMensagens = async () => {
-      try {
-        const res = await axios.get<{ mensagens: Mensagem[] }>(
-          `http://localhost:4000/chats/contract/${salaId}`
-        );
-        setMensagens(res.data.mensagens || []);
-      } catch (err) {
-        console.error("Erro ao carregar mensagens:", err);
-      }
+    const carregar = async () => {
+      const res = await axios.get(`http://localhost:4000/chats/contract/${id}`);
+      setMensagens(res.data.mensagens || []);
     };
 
-    carregarMensagens();
-    socket.emit("joinRoom", { salaId });
+    carregar();
 
-    socket.on("receiveMessage", (msg: Mensagem) => {
-      setMensagens((prev) => [...prev, msg]);
+    socket.emit("joinRoom", { salaId: id });
+
+    socket.on("receiveMessage", msg => {
+      setMensagens(prev => [...prev, msg]);
     });
 
     return () => {
       socket.off("receiveMessage");
-      socket.emit("leaveRoom", { salaId });
+      socket.emit("leaveRoom", { salaId: id });
     };
   }, [id]);
 
-  //  Carrega nome do outro usuário (aluno ou treinador)
+  // Nome do outro usuário
   useEffect(() => {
-    if (!id || !userId || !role) return;
+    if (!id || !userId) return;
 
-    const carregarContrato = async () => {
-      try {
-        const res = await axios.get(`http://localhost:4000/contracts/${id}`);
-        const contrato: Contrato = res.data; 
+    const buscarContrato = async () => {
+      const res = await axios.get(`http://localhost:4000/contracts/${id}`);
+      const c: Contrato = res.data;
 
-        if (userId === contrato.aluno._id) {
-          setNomeOutroUsuario(contrato.treinador.nome || contrato.treinador.name || "Treinador");
-        } else {
-          setNomeOutroUsuario(contrato.aluno.nome || contrato.aluno.name || "Aluno");
-        }
-      } catch (err) {
-        console.error("Erro ao carregar contrato:", err);
-      }
+      const outro = c.aluno._id === userId ? c.treinador : c.aluno;
+
+      setNomeOutroUsuario(outro.nome || outro.name || "Usuário");
     };
 
-    carregarContrato();
-  }, [id, userId, role]);
-
+    buscarContrato();
+  }, [id, userId]);
 
   const enviarMensagem = () => {
-    if (!novaMensagem.trim() || !userId || !role) return;
+    if (!novaMensagem.trim() || !id || !userId || !role) return;
 
-    const salaId = Array.isArray(id) ? id[0] : id;
-
-    const mensagem: Mensagem & { salaId: string } = {
-      salaId: salaId!,
-      remetente: userId,
-      remetenteModel: role === "aluno" ? "Aluno" : "Treinador",
+    const msg: Mensagem & { salaId: string } = {
+      salaId: String(id),
       conteudo: novaMensagem,
+      remetente: userId,
+      remetenteModel: role === "Aluno" ? "Aluno" : "Treinador",
       horario: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     };
 
-    socket.emit("sendMessage", mensagem);
+    socket.emit("sendMessage", msg);
     setNovaMensagem("");
   };
 
+  const deletarContrato = async (contratoId: string) => {
+    try {
+      await axios.delete(`http://localhost:4000/contracts/${contratoId}`);
+
+      // Remove da sidebar
+      setContratos(prev => prev.filter(c => c._id !== contratoId));
+
+      // Redireciona se estiver na conversa deletada
+      if (String(id) === String(contratoId)) {
+        router.push("/chat");
+      }
+    } catch (err) {
+      console.error("Erro ao deletar contrato", err);
+    }
+  };
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh", border: "1px solid #ccc" }}>
-      <header style={{ padding: "10px", backgroundColor: "#007bff", color: "white", textAlign: "center" }}>
-        Conversa com {nomeOutroUsuario || "Usuário"}
-      </header>
+    <div className={styles.container}>
+      
+      <aside className={styles.sidebar}>
+        <header className={styles.sidebarHeader}>
+          Seus Contatos
+        </header>
 
-      <main style={{ flex: 1, overflowY: "auto", padding: "10px" }}>
-        {mensagens.length === 0 && <p style={{ textAlign: "center", color: "#888" }}>Nenhuma mensagem ainda.</p>}
+        <div className={styles.contactList}>
+          {contratos.map(c => {
+            const outro =
+              c.aluno._id === userId ? c.treinador : c.aluno;
 
-        {mensagens.map((msg) => {
-          
-          const remetenteId = typeof msg.remetente === "object" ? msg.remetente._id : msg.remetente;
-          const isMeu = String(remetenteId) === String(userId);
-
-          return (
-            <div key={msg._id} style={{ display: "flex", justifyContent: isMeu ? "flex-end" : "flex-start", marginBottom: "8px" }}>
-              <div style={{ maxWidth: "70%", padding: "8px 12px", borderRadius: "15px", backgroundColor: isMeu ? "#007bff" : "#e5e5ea", color: isMeu ? "white" : "black" }}>
-                <div style={{ fontWeight: "bold", marginBottom: "4px" }}>{isMeu ? "Você" : nomeOutroUsuario}</div>
-                <div>{msg.conteudo}</div>
-                <div style={{ fontSize: "10px", textAlign: "right", marginTop: "2px" }}>
-                  {msg.horario || (msg.data ? new Date(msg.data).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "")}
+            return (
+              <div
+                key={c._id}
+                className={`${styles.contactItem} ${id === c._id ? styles.activeContact : ""}`}
+              >
+                <div
+                  className={styles.contactInfo}
+                  onClick={() => router.push(`/chat/${c._id}`)}
+                >
+                  <strong>{outro.nome || outro.name}</strong>
+                  <p>Chat ativo</p>
                 </div>
-              </div>
-            </div>
-          );
-        })}
-      </main>
 
-      <footer style={{ display: "flex", borderTop: "1px solid #ccc", padding: "10px" }}>
-        <input
-          type="text"
-          value={novaMensagem}
-          onChange={(e) => setNovaMensagem(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && enviarMensagem()}
-          placeholder="Digite sua mensagem..."
-          style={{ flex: 1, padding: "8px", border: "1px solid #ccc", borderRadius: "15px 0 0 15px", outline: "none" }}
-        />
-        <button onClick={enviarMensagem} style={{ padding: "8px 16px", border: "none", backgroundColor: "#007bff", color: "white", borderRadius: "0 15px 15px 0", cursor: "pointer" }}>
-          Enviar
-        </button>
-      </footer>
+                <button
+                  className={styles.deleteButton}
+                  onClick={() => deletarContrato(c._id)}
+                >
+                  ✖
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </aside>
+
+      
+      <main className={styles.chatArea}>
+        {id ? (
+          <>
+            <header className={styles.chatHeader}>
+              {nomeOutroUsuario}
+            </header>
+
+            <div className={styles.messages}>
+              {mensagens.map(m => {
+                const remetenteId =
+                  typeof m.remetente === "string"
+                    ? m.remetente
+                    : m.remetente._id;
+
+                const isMe = remetenteId === userId;
+
+                return (
+                  <div
+                    key={m._id}
+                    className={isMe ? styles.msgRight : styles.msgLeft}
+                  >
+                    <div className={isMe ? styles.bubbleRight : styles.bubbleLeft}>
+                      {m.conteudo}
+                      <div className={styles.time}>{m.horario}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <footer className={styles.footer}>
+              <input
+                value={novaMensagem}
+                onChange={e => setNovaMensagem(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && enviarMensagem()}
+                placeholder="Digite sua mensagem"
+                className={styles.input}
+              />
+              <button onClick={enviarMensagem} className={styles.sendBtn}>
+                Enviar
+              </button>
+            </footer>
+          </>
+        ) : (
+          <div className={styles.noChat}>
+            Selecione um contato para começar
+          </div>
+        )}
+      </main>
     </div>
   );
 }

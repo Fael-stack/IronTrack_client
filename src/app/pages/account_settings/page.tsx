@@ -32,7 +32,7 @@ const AccountSettings: React.FC = () => {
     const fetchUser = async () => {
       const token = localStorage.getItem('token');
       const idAluno = localStorage.getItem('userId');
-      const idTreinador = localStorage.getItem('treinadorId'); // opcional, se usar
+      const idTreinador = localStorage.getItem('treinadorId'); // opcional, se usar me avisa
 
       if (!token) {
         router.push('/pages/login/treinador');
