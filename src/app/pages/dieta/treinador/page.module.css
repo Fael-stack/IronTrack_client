@@ -5,24 +5,47 @@
   font-family: "Inter", sans-serif;
 }
 
-.title {
+.pageTitle {
   text-align: center;
   font-size: 2rem;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   font-weight: 700;
   color: #1a1a1a;
 }
 
-.dietList {
+.selectArea {
+  margin-bottom: 25px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 8px;
+}
+
+.selectInput {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d3d3d3;
+  font-size: 1rem;
+  background: #fff;
+  transition: border 0.2s ease;
+}
+
+.selectInput:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.subTitle {
+  font-size: 1.4rem;
+  margin: 25px 0 15px 0;
+  font-weight: 600;
+  color: #222;
 }
 
 .card {
   background: #ffffff;
   border-radius: 12px;
   padding: 20px;
+  margin-bottom: 20px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   border: 1px solid #e5e5e5;
   transition: transform 0.15s ease, box-shadow 0.2s ease;
@@ -36,18 +59,17 @@
 .cardHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 10px;
 }
 
-.cardHeader h2 {
-  font-size: 1.4rem;
+.cardHeader h3 {
+  margin: 0;
+  font-size: 1.3rem;
   font-weight: 600;
-  color: #222;
 }
 
 .kcal {
-  background: #ffcf5a;
+  background: #ffd344;
   padding: 4px 10px;
   border-radius: 6px;
   font-weight: 600;
@@ -55,9 +77,9 @@
 }
 
 .info {
-  margin: 6px 0;
-  color: #4a4a4a;
+  color: #444;
   font-size: 0.95rem;
+  margin: 6px 0;
 }
 
 .actions {
@@ -97,7 +119,7 @@
 }
 
 .createBtn {
-  margin-top: 25px;
+  margin-top: 20px;
   background: #0066ff;
   color: white;
   width: 100%;

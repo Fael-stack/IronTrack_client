@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { usePathname } from "next/navigation";
+import AccountSettings from '@/app/pages/account_settings/page';
 
 type User = {
   id: string
@@ -112,6 +113,7 @@ export default function Header() {
               alt="Avatar"
               className="headerAvatar"
               onError={(e) => (e.currentTarget.src = '/default-avatar.png')}
+              
             />
           </>
         ) : (
@@ -173,6 +175,7 @@ export default function Header() {
 
         .userName {
           font-weight: 600;
+          color: #000000ff;
         }
 
         .logoutBtn {

@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import styles from "./Page.module.css";
 import DietaModal from "@/components/Modal/DietaModal";
 
 interface Dieta {
@@ -18,7 +19,6 @@ export default function DietaPage() {
   const [editDieta, setEditDieta] = useState<Dieta | null>(null);
   const [currentDietaIndex, setCurrentDietaIndex] = useState<number | null>(null);
 
-  // Carregar dietas do usuário logado
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return console.error("Token não encontrado.");
@@ -106,26 +106,40 @@ export default function DietaPage() {
   };
 
   return (
-    <div className="container">
-      <h1>Suas Dietas</h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Suas Dietas</h1>
 
-      {dietas.map((dieta, idx) => (
-        <div key={dieta._id} className="dieta-card">
-          <div className="dieta-header">
-            <h2>{dieta.name}</h2>
-            <span>{dieta.kcal} kcal</span>
-          </div>
-          <p>{dieta.day_time} — {dieta.week_day}</p>
-          <p><strong>Macros:</strong> {dieta.macronutrients.join(", ")}</p>
-          <p><strong>Ingredientes:</strong> {dieta.ingredients.join(", ")}</p>
-          <div className="dieta-actions">
-            <button onClick={() => editExistingDieta(idx)}>Editar</button>
-            <button onClick={() => deleteDieta(idx)}>Deletar</button>
-          </div>
-        </div>
-      ))}
+      <div className={styles.dietList}>
+        {dietas.map((dieta, idx) => (
+          <div key={dieta._id} className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h2>{dieta.name}</h2>
+              <span className={styles.kcal}>{dieta.kcal} kcal</span>
+            </div>
 
-      <button className="create-btn" onClick={() => setModalOpen(true)}>Criar Dieta</button>
+            <p className={styles.info}>
+              {dieta.day_time} — {dieta.week_day}
+            </p>
+
+            <p className={styles.info}>
+              <strong>Macros:</strong> {dieta.macronutrients.join(", ")}
+            </p>
+
+            <p className={styles.info}>
+              <strong>Ingredientes:</strong> {dieta.ingredients.join(", ")}
+            </p>
+
+            <div className={styles.actions}>
+              <button className={styles.editBtn} onClick={() => editExistingDieta(idx)}>Editar</button>
+              <button className={styles.deleteBtn} onClick={() => deleteDieta(idx)}>Deletar</button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button className={styles.createBtn} onClick={() => setModalOpen(true)}>
+        Criar Dieta
+      </button>
 
       {modalOpen && (
         <DietaModal
@@ -134,18 +148,6 @@ export default function DietaPage() {
           onSave={handleSaveDieta}
         />
       )}
-
-      <style>{`
-        .container { max-width: 800px; margin: auto; padding: 20px; }
-        h1 { text-align: center; margin-bottom: 20px; }
-        .dieta-card { border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-bottom: 15px; background: #f9f9f9; }
-        .dieta-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .dieta-actions { margin-top: 10px; display: flex; gap: 10px; }
-        .dieta-actions button, .create-btn { cursor: pointer; padding: 5px 10px; border: none; border-radius: 4px; }
-        .dieta-actions button { background: #ffcc00; }
-        .dieta-actions button:nth-child(2) { background: #ff4444; color: white; }
-        .create-btn { margin-top: 15px; background: #007bff; color: white; }
-      `}</style>
     </div>
   );
 }

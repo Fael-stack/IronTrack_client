@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { 
-  FaHeartbeat, FaUser, FaShieldAlt, FaBell, 
-  FaQuestionCircle, FaSignOutAlt, 
-  FaChevronRight, FaChevronDown 
+import React, { useEffect, useState, useRef } from 'react';
+import {
+  FaHeartbeat, FaUser, FaCamera, FaShieldAlt, FaBell,
+  FaQuestionCircle, FaSignOutAlt,
+  FaChevronRight, FaChevronDown
 } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import './page.css';
@@ -28,11 +28,42 @@ const AccountSettings: React.FC = () => {
 
   const router = useRouter();
 
+  
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Carrega o avatar salvo no localStorage
+  useEffect(() => {
+    const storedAvatar = localStorage.getItem("avatarUrl");
+    if (storedAvatar) setAvatarUrl(storedAvatar);
+  }, []);
+
+  // salva  imagem em Base64 pra n explodir o coiso
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result as string;
+      localStorage.setItem("avatarUrl", base64);
+      setAvatarUrl(base64);
+    };
+
+    reader.readAsDataURL(file);
+  
+    if (e.target) e.target.value = '';
+  };
+
+  // Abre o seletor de arquivos
+  const openFilePicker = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem('token');
-      const idAluno = localStorage.getItem('userId');
-      const idTreinador = localStorage.getItem('treinadorId'); // opcional, se usar me avisa
 
       if (!token) {
         router.push('/pages/login/treinador');
@@ -40,7 +71,6 @@ const AccountSettings: React.FC = () => {
       }
 
       try {
-        // tenta buscar aluno primeiro
         let res = await fetch('http://localhost:4000/alunos/auth/me', {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -58,10 +88,10 @@ const AccountSettings: React.FC = () => {
           });
           setUserType('aluno');
         } else {
-          // se não for aluno, tenta treinador
           res = await fetch('http://localhost:4000/treinadores/auth/me', {
             headers: { Authorization: `Bearer ${token}` },
           });
+
           if (res.ok) {
             const data = await res.json();
             setUser({
@@ -86,13 +116,6 @@ const AccountSettings: React.FC = () => {
     fetchUser();
   }, [router]);
 
-    useEffect(() => {
-    const storedAvatar = localStorage.getItem('avatarUrl');
-    if (storedAvatar) {
-      setAvatarUrl(storedAvatar);
-    }
-  }, []);
-
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
@@ -113,14 +136,40 @@ const AccountSettings: React.FC = () => {
       <main className="mainContent">
         <div className="profileCard">
           <div className="profileInfo">
-            <div className="profileAvatar">
-              <img
-                src={avatarUrl}
-                alt="Profile Avatar"
-                className="profileAvatarImg"
-                onError={(e) => (e.currentTarget.src = '/default-avatar.png')}
+
+            
+            <div className="profilePictureWrapper">
+              <div className="profileAvatar">
+                <img
+                  src={avatarUrl}
+                  alt="Profile Avatar"
+                  className="profileAvatarImg"
+                  onError={(e) => (e.currentTarget.src = '/default-avatar.png')}
+                />
+              </div>
+
+              
+              <button
+                type="button"
+                className="cameraButtonFixed"
+                onClick={openFilePicker}
+                aria-label="Alterar foto de perfil"
+              >
+                <FaCamera />
+              </button>
+
+              {/* input invisível */}
+              <input
+                id="avatarUpload"
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+                style={{ display: 'none' }}
               />
             </div>
+
+            
             <div className="profileDetails">
               <h2 className="profileName">
                 {user ? user.name : 'Carregando...'}
@@ -130,14 +179,16 @@ const AccountSettings: React.FC = () => {
                 {userType === 'aluno' ? 'Aluno Premium' : 'Treinador Pro'}
               </span>
             </div>
+
           </div>
         </div>
 
+        
         <div className="settingsCard">
           <h3 className="settingsTitle">Configurações da Conta</h3>
           <ul className="settingsList">
 
-            {/* Informações pessoais */}
+            
             <li className="settingsItem">
               <button
                 className="settingsLink"
@@ -170,7 +221,7 @@ const AccountSettings: React.FC = () => {
               )}
             </li>
 
-            {/* Privacidade */}
+            
             <li className="settingsItem">
               <button
                 className="settingsLink"
@@ -214,7 +265,7 @@ const AccountSettings: React.FC = () => {
               </button>
             </li>
 
-            {/* Ajuda */}
+            
             <li className="settingsItem">
               <button
                 className="settingsLink"
@@ -259,6 +310,7 @@ const AccountSettings: React.FC = () => {
                 <FaChevronRight className="settingsArrow" />
               </button>
             </li>
+
           </ul>
         </div>
       </main>

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import TreinoModal from "@/components/Modal/TreinoModal";
+import styles from "./page.module.css";
 
 interface Exercise {
     _id?: string;
@@ -35,23 +36,11 @@ export default function TreinosTreinadorPage() {
     const [editTreino, setEditTreino] = useState<Treino | null>(null);
     const [currentTreinoIndex, setCurrentTreinoIndex] = useState<number | null>(null);
 
-    // ============================================
-    // 1️⃣ CARREGA TOKEN + TREINADOR ID DO LOCALSTORAGE
-    // ============================================
     useEffect(() => {
-        const t = localStorage.getItem("token");
-        const id = localStorage.getItem("userId");
-
-        console.log("token →", t);
-        console.log("treinadorId →", id);
-
-        setToken(t);
-        setTreinadorId(id);
+        setToken(localStorage.getItem("token"));
+        setTreinadorId(localStorage.getItem("userId"));
     }, []);
 
-    // ============================================
-    // 2️⃣ BUSCA ALUNOS DO TREINADOR
-    // ============================================
     useEffect(() => {
         if (!token || !treinadorId) return;
 
@@ -62,25 +51,14 @@ export default function TreinosTreinadorPage() {
                 });
 
                 const data = await res.json();
-                console.log("Alunos retornados pelo backend →", data);
-
-                if (Array.isArray(data)) {
-                    setAlunos(data);
-                } else {
-                    console.error("Backend NÃO retornou array de alunos:", data);
-                    alert(data.error || "Erro ao buscar alunos.");
-                    setAlunos([]);
-                }
-            } catch (error) {
-                console.error("Erro ao buscar alunos:", error);
+                if (Array.isArray(data)) setAlunos(data);
+                else setAlunos([]);
+            } catch {
                 setAlunos([]);
             }
         })();
     }, [token, treinadorId]);
 
-    // ============================================
-    // 3️⃣ CARREGA TREINOS DO ALUNO SELECIONADO
-    // ============================================
     useEffect(() => {
         if (!token || !selectedAluno) return;
 
@@ -91,24 +69,14 @@ export default function TreinosTreinadorPage() {
                 });
 
                 const data = await res.json();
-                console.log("Treinos retornados pelo backend →", data);
-
-                if (Array.isArray(data)) {
-                    setTreinos(data);
-                } else {
-                    console.error("Backend NÃO retornou array de treinos:", data);
-                    setTreinos([]);
-                }
-            } catch (err) {
-                console.error("Erro ao buscar treinos:", err);
+                if (Array.isArray(data)) setTreinos(data);
+                else setTreinos([]);
+            } catch {
                 setTreinos([]);
             }
         })();
     }, [token, selectedAluno]);
 
-    // ============================================
-    // 4️⃣ SALVAR OU EDITAR TREINO
-    // ============================================
     const handleSaveTreino = async (treinoInput: Omit<Treino, "_id">) => {
         if (!token || !selectedAluno) return alert("Aluno ou token faltando.");
 
@@ -149,7 +117,6 @@ export default function TreinosTreinadorPage() {
             setCurrentTreinoIndex(null);
             setModalOpen(false);
         } catch (err: any) {
-            console.error(err);
             alert(err.message || "Erro desconhecido.");
         }
     };
@@ -168,24 +135,24 @@ export default function TreinosTreinadorPage() {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },
             });
-            if (!res.ok) throw new Error("Erro ao deletar treino.");
+            if (!res.ok) throw new Error();
             setTreinos(prev => prev.filter((_, i) => i !== idx));
-        } catch (err) {
-            console.error(err);
+        } catch {
             alert("Erro ao deletar treino.");
         }
     };
 
-    // ============================================
-    // 5️⃣ RENDER
-    // ============================================
     return (
-        <div style={{ maxWidth: 900, margin: "auto", padding: 20 }}>
-            <h1>Treinos dos Alunos</h1>
+        <div className={styles.container}>
+            <h1 className={styles.title}>Treinos dos Alunos</h1>
 
-            <div style={{ marginBottom: 20 }}>
+            <div className={styles.selectArea}>
                 <label>Selecione um aluno:</label>
-                <select value={selectedAluno} onChange={e => setSelectedAluno(e.target.value)}>
+                <select
+                    className={styles.select}
+                    value={selectedAluno}
+                    onChange={e => setSelectedAluno(e.target.value)}
+                >
                     <option value="">Escolha um aluno</option>
                     {alunos.map(a => (
                         <option key={a._id} value={a._id}>
@@ -197,7 +164,9 @@ export default function TreinosTreinadorPage() {
 
             {selectedAluno && (
                 <>
-                    <h2>Treinos de {alunos.find(a => a._id === selectedAluno)?.name}</h2>
+                    <h2 className={styles.subtitle}>
+                        Treinos de {alunos.find(a => a._id === selectedAluno)?.name}
+                    </h2>
 
                     {treinos.map((t, idx) => {
                         const completed = t.exercises?.filter(e => e.completed).length || 0;
@@ -205,45 +174,37 @@ export default function TreinosTreinadorPage() {
                         const percent = total ? Math.round((completed / total) * 100) : 0;
 
                         return (
-                            <div
-                                key={t._id || idx}
-                                style={{
-                                    border: "1px solid #ddd",
-                                    padding: 12,
-                                    borderRadius: 8,
-                                    marginBottom: 12,
-                                }}
-                            >
-                                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                    <h3 style={{ margin: 0 }}>{t.name}</h3>
-                                    <span>{percent}%</span>
+                            <div key={t._id || idx} className={styles.treinoCard}>
+                                <div className={styles.treinoHeader}>
+                                    <h3>{t.name}</h3>
+                                    <span className={styles.percent}>{percent}%</span>
                                 </div>
-                                <p>
+
+                                <p className={styles.description}>
                                     {t.day_time} — {t.week_day}
                                 </p>
 
-                                <ul>
+                                <ul className={styles.exerciseList}>
                                     {t.exercises.map((ex, i) => (
-                                        <li key={ex._id ?? i}>
-                                            <strong
-                                                style={{
-                                                    textDecoration: ex.completed ? "line-through" : "none",
-                                                }}
-                                            >
+                                        <li key={ex._id ?? i} className={styles.exerciseItem}>
+                                            <span className={ex.completed ? styles.completed : ""}>
                                                 {ex.name}
-                                            </strong>{" "}
-                                            ({ex.details})
+                                            </span>{" "}
+                                            <small>({ex.details})</small>
                                         </li>
                                     ))}
                                 </ul>
 
-                                <div style={{ marginTop: 8 }}>
-                                    <button onClick={() => editExistingTreino(idx)} style={{ marginRight: 8 }}>
+                                <div className={styles.actions}>
+                                    <button
+                                        className={styles.editBtn}
+                                        onClick={() => editExistingTreino(idx)}
+                                    >
                                         Editar
                                     </button>
                                     <button
+                                        className={styles.deleteBtn}
                                         onClick={() => deleteTreino(idx)}
-                                        style={{ background: "#ff4444", color: "#fff" }}
                                     >
                                         Deletar
                                     </button>
@@ -252,7 +213,7 @@ export default function TreinosTreinadorPage() {
                         );
                     })}
 
-                    <button onClick={() => setModalOpen(true)} style={{ marginTop: 12 }}>
+                    <button className={styles.createBtn} onClick={() => setModalOpen(true)}>
                         Criar Treino para este aluno
                     </button>
                 </>
